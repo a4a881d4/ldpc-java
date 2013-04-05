@@ -100,11 +100,11 @@ public class BigGirth {
 					  break ITER;
 				  }
 		  
-			  System.out.print("k="+k+"  ");
+			  System.err.print("k="+k+"  ");
 			  for(m=0;m<nodesInGraph[k].numOfConnectionSymbolBit;m++)
 				  System.out.print(nodesInGraph[k].connectionSymbolBit[m]+" ");
-			  System.out.print("LocalGirth="+(2*localGirth[k]+4));
-			  System.out.println();
+			  System.err.print("LocalGirth="+(2*localGirth[k]+4));
+			  System.err.println();
 			  updateConnection(k);
 		  }
 		  loadH();

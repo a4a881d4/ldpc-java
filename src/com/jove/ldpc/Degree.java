@@ -1,4 +1,5 @@
 package com.jove.ldpc;
+import java.io.PrintWriter;
 
 public class Degree {
 
@@ -21,7 +22,7 @@ public class Degree {
 			tab[i].deg=deg.tab[i].deg;
 		}
 	}
-	Degree( int[] deg, double[] degFrac)
+	public Degree( int[] deg, double[] degFrac)
 	{
 		assert(deg.length==degFrac.length);
 		tab = new DegItem[deg.length];
@@ -32,16 +33,16 @@ public class Degree {
 			tab[i].deg=deg[i];
 		}
 	}
-	public void log() {
+	public void log(PrintWriter out) {
 		int i;		
-		System.out.printf("# ");
+		out.printf("# ");
 		for( i=0;i<tab.length;i++ )
-			System.out.printf("  %8d",tab[i].deg);
-		System.out.printf("\n");
-		System.out.printf("# ");
+			out.printf("  %8d",tab[i].deg);
+		out.printf("\n");
+		out.printf("# ");
  		for( i=0;i<tab.length;i++ )
-			System.out.printf("  %8d",tab[i].degFrac);
-		System.out.printf("\n");
+			out.printf("  %8f",tab[i].degFrac);
+		out.printf("\n");
 	}
 		
 	boolean check()

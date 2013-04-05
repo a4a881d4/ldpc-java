@@ -6,4 +6,7 @@ ldpc:
 	@echo jar
 	jar cf ldpc.jar -C build .
 
+Ltest:
+	javac -cp ./ldpc.jar -d build test/*.java
+	
 

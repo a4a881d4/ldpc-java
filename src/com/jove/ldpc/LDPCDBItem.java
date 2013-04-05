@@ -10,7 +10,7 @@ public class LDPCDBItem {
 	public double[] EbN0Range;
 	double[] Pb;
 	public int[][] code;
-	LDPCDBItem( Degree deg, String comm, String url, double[] Eb, double rate )
+	public LDPCDBItem( Degree deg, String comm, String url, double[] Eb, double rate )
 	{
 		this.deg = deg;
 		comments = comm;
@@ -69,21 +69,21 @@ public class LDPCDBItem {
 		}
 		return ret;
 	}
-	public void log( int bl ) {
+	public void log(PrintWriter out, int bl ) {
 		int i,j;
-		System.out.printf("%d %d %d\n",code[0].length,code.length,bl);
+		out.printf("%d %d %d\n",code[0].length,code.length,bl);
 		for( i=0;i<code.length;i++ ) {
       			for( j=0;j<code[i].length;j++ )
-				System.out.printf("%4d ",code[i][j]);
-			System.out.printf("\n");
+				out.printf("%4d ",code[i][j]);
+			out.printf("\n");
 		}
-		deg.log();
+		deg.log(out);
 	}
-	public static void logCode(LDPCDBItem x, int bl, int N, int poly) 
+	public void logCode(PrintWriter out, int bl, int N, int poly) 
 	{
 		int i;
-		if( x.getCode(N, bl, poly, null) != null) 
-			log(bl);
+		if( getCode(N, bl, poly, null) != null) 
+			log(out, bl);
 	}
 }
  
