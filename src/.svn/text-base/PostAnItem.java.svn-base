@@ -1,0 +1,142 @@
+
+import java.io.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.jove.ldpc.*;
+/**
+ * Servlet implementation class PostAnItem
+ */
+public class PostAnItem extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * Default constructor. 
+     */
+    public PostAnItem() {
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+    private void int2tab( int[][] a, PrintWriter out )
+    {
+    	int i,j;
+    	out.println("<table border=\"1\">");
+    	for( i=0;i<a.length;i++)
+    	{
+    		out.println("<tr>");
+    		for( j=0;j<a[i].length;j++)
+    			out.println("<td>"+a[i][j]+"</td>");
+    		out.println("</tr>");
+    	}
+    	out.println("</table>");
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html");
+		PrintWriter res = response.getWriter();
+		
+		int F = Integer.parseInt(request.getParameter("F"));
+		int N,SIM,codeIndex;
+		if( F==1 )
+		{
+			N = Integer.parseInt(request.getParameter("N"));
+			poly a = new poly();
+			poly.init(3);
+			poly.out = res;
+			Integer[] ipp = new Integer[128];
+			int num = a.findp( ipp, N);
+			for( int i=0;i<num;i++ )
+			{
+				int m = 0;
+				int j=ipp[i];
+				res.printf("%x ", ipp[i]);
+				res.println("<math xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">");
+				res.println("<mrow>");
+				if((j&1)==1)
+					res.println("<mn> 1 </mn>");
+				while( j!=0 )
+				{
+					m++;
+					j>>=1;
+					if((j&1)==1)
+					{
+						if(m!=1)
+							res.println("<mo>+</mo> <msup> <mi>x</mi> <mn>"+m+"</mn> </msup>");
+						else
+							res.println("<mo>+</mo> <mi>x</mi> ");
+					}
+				}
+				res.println("</mrow></math>");
+				
+			}
+		}
+		if( F==2 )
+		{
+			N = Integer.parseInt(request.getParameter("N"));
+			SIM = Integer.parseInt(request.getParameter("SIM"));
+			codeIndex = Integer.parseInt(request.getParameter("CODE"));
+			int bl = Integer.parseInt(request.getParameter("BL"));;
+			LDPCDB db = new LDPCDB();
+			LDPCDBItem x = db.db.get(codeIndex);
+			int poly = QCRS.getPolybyN((int)(x.rate*(double)N));
+			int i;
+			
+			res.println("<h1>Welcome to Error Sim!</h1>");
+			
+			
+			if( x.getCode(N, bl, poly, null) != null)
+			{
+				int2tab(x.code,res);
+				QCRS enc = new QCRS(x.code);
+				enc.encoderInit();
+				byte[] msg = new byte[N*bl/8];
+				byte[] out = new byte[N*bl/8];
+				for( i=0;i<(enc.N-enc.M)*enc.bl/8;i++ )
+					msg[i] = (byte)Math.round(Math.random()*255.);
+				enc.setInfo(msg);
+				Shift[] so = enc.enc();
+				Shift.shift2msg(so, msg, 0 );
+				BlockDec dec = new BlockDec(x.code,bl);
+				float[] sigma = x.sigma();
+				res.println("<h1>I am OK</h1>");
+				for( int j=0;j<sigma.length;j++  )
+				{
+					AWGN channel = new AWGN(sigma[j]);
+					int err=0;
+					for( int cnt=0;cnt<SIM;cnt++ )
+					{
+						float[] recv = channel.channel(msg);
+						dec.dec(recv, sigma[j], 32, out);
+						for( i=0;i<out.length;i++ )
+							if( out[i]!=msg[i] )
+							{
+								System.out.println(x.EbN0Range[j] + "  "+ i+"  Error "+(int)out[i]+" "+(int)msg[i]);
+								err++;
+								break;
+							}
+					}
+					res.println("<h3>");
+					res.println("EbN0 :"+x.EbN0Range[j]+"  Blk Err Rate: "+(double)err/(double)SIM);
+					res.println("</h3>");
+				}	
+			}
+			else
+				res.println("<h2>Can not inv</h2>");
+			res.println(x.comments)	;
+		}
+		res.close();
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+}
