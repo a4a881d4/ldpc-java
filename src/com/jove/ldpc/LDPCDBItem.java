@@ -69,5 +69,21 @@ public class LDPCDBItem {
 		}
 		return ret;
 	}
+	public void log( int bl ) {
+		int i,j;
+		System.out.printf("%d %d %d\n",code[0].length,code.length,bl);
+		for( i=0;i<code.length;i++ ) {
+      			for( j=0;j<code[i].length;j++ )
+				System.out.printf("%4d ",code[i][j]);
+			System.out.printf("\n");
+		}
+		deg.log();
+	}
+	public static void logCode(LDPCDBItem x, int bl, int N, int poly) 
+	{
+		int i;
+		if( x.getCode(N, bl, poly, null) != null) 
+			log(bl);
+	}
 }
  

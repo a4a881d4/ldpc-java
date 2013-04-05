@@ -96,9 +96,6 @@ public class LDPCDB {
 			byte[] out = new byte[N*bl/8];
 			for( i=0;i<(enc.N-enc.M)*enc.bl/8;i++ )
 				msg[i] = (byte)Math.round(Math.random()*255.);
-//			for( i=0;i<(enc.N-enc.M)*enc.bl/8;i++ )
-//				msg[i] = (byte)(0&0xff);
-//			msg[0]=2;
 			enc.setInfo(msg);
 			Shift[] so = enc.enc();
 			enc.verify(15);
@@ -114,8 +111,6 @@ public class LDPCDB {
 				{
 					float[] recv = channel.channel(msg);
 					dec.dec(recv, sigma[j], 100, out);
-					//Shift[] s1 = Shift.msg2shift(out);
-					//Shift.printArray(s1, " dec ", 3);
 					for( i=0;i<out.length;i++ )
 						if( out[i]!=msg[i] )
 						{

@@ -32,6 +32,18 @@ public class Degree {
 			tab[i].deg=deg[i];
 		}
 	}
+	public void log() {
+		int i;		
+		System.out.printf("# ");
+		for( i=0;i<tab.length;i++ )
+			System.out.printf("  %8d",tab[i].deg);
+		System.out.printf("\n");
+		System.out.printf("# ");
+ 		for( i=0;i<tab.length;i++ )
+			System.out.printf("  %8d",tab[i].degFrac);
+		System.out.printf("\n");
+	}
+		
 	boolean check()
 	{
 		double sum = 0;
