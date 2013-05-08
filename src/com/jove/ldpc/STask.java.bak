@@ -19,13 +19,13 @@ public class STask {
 		}
 		void dump( PrintWriter out )
 		{
-			out.printf("%d %d %d\n",in,mac,ro);
+			out.println("%d %d %d",in,mac,ro);
 		}
 	};
 
 	public void dumpTask(PrintWriter out)
 	{
-		out.printf("%d\n",taskLen);
+		out.println("%d",taskLen);
 		for( int i=0;i<taskLen;i++ )
 			task[i].dump( out );
 	}

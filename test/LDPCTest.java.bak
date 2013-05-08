@@ -28,7 +28,7 @@ class LDPCTest {
 		LDPCDBItem item = new LDPCDBItem( Ddeg, "", "", range, rate );
 		PrintWriter writer = new PrintWriter(new FileWriter(ofile));
 		item.logCode(writer,bl,N,poly);
-		item.logTask(writer,bl,N,poly);
+		item.logTask(Writer,bl,N,poly);
 		writer.flush();
 		writer.close();
 	}

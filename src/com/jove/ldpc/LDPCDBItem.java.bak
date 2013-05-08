@@ -88,8 +88,7 @@ public class LDPCDBItem {
 	public void logTask(PrintWriter out, int bl, int N, int poly)
 	{
 		int code[][] = getCode(N,bl,poly,null);
-		QCRS rs = new QCRS( code );
-		rs.dumpTask(out);	
+		QCRS rs = new QCRS( code );	
 	}
 }
  
