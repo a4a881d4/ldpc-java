@@ -29,6 +29,10 @@ class LDPCTest {
 		PrintWriter writer = new PrintWriter(new FileWriter(ofile));
 		item.logCode(writer,bl,N,poly);
 		item.logTask(writer,bl,N,poly);
+		QCRS rs = new QCRS(item.getCode());
+		for( i=0;i<(rs.N-rs.M)*bl;i+=73 )
+			QCRS.testEnc(rs, i);
+		rs.reportTask();
 		writer.flush();
 		writer.close();
 	}

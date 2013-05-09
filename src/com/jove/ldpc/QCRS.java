@@ -315,7 +315,7 @@ public class QCRS {
 		for( i=0;i<N-M;i++ )
 			info[i] = new Shift();
 	}
-	void reportTask()
+	public void reportTask()
 	{
 		System.out.printf("ET: \n");
 		tET.printfTask();
@@ -407,14 +407,14 @@ public class QCRS {
 	{
 		Shift.msg2shift(info, msg, (N-M)*bl);
 	}
-	static void testEnc( QCRS ttu, int k)
+	public static void testEnc( QCRS ttu, int k)
 	{
 //		ttu.reportTask();
 		Shift.clean(ttu.info);
 		ttu.info[k/ttu.bl].setXk(k%ttu.bl);
-		ttu.encShift(0);
+		ttu.encShift(0xff);
 		Shift.printArray(ttu.result,"Result: ", 3);
-		ttu.verify(2);
+		ttu.verify(7);
 	}
 	
 	public static void check125() {

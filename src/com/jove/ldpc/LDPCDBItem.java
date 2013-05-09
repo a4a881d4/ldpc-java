@@ -91,5 +91,9 @@ public class LDPCDBItem {
 		QCRS rs = new QCRS( code );
 		rs.dumpTask(out);	
 	}
+	public int[][] getCode()
+	{
+		return code;	
+	} 
 }
  
